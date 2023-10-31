@@ -5,9 +5,11 @@ import time
 import string
 import itertools
 
+# print(sys.argv)
 
-arg = "-d"
-password = "vo30qb"
+arg = sys.argv[1]
+if arg != ('--help'):
+    password = sys.argv[2]
 
 def bruteForce():
     print("Brute Force Attack: trying to crack ", password)
@@ -60,10 +62,10 @@ if arg == ("-b"):
 if arg == ("-d"):
     dictionaryAttack()
 
-if arg == ("-help"):
+if arg == ("--help"):
     print("To get started, enter one of the arguments:\n-b To brute force a password (10 characters max for plaintext)\n-d To guess a plaintext password\n-m For MD5 hash decryption\n-b For BCrypt hash decryption\n-s For SHA-256 hash decryption\n")
     print("Then follow it up with the password you want decrypted (Hashed or Plaintext)\n")
-    print("Use the argument -help to see this message again!")
+    print("Use the argument --help to see this message again!")
  
 
 
