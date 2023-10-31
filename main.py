@@ -1,41 +1,50 @@
 import sys
 import hashlib
 import getopt
-import os
-import platform
 import time
 import string
-
+import itertools
 
 
 arg = "-b"
-os = os.name
-password = "p"
+password = ""
 
-def bruteForce(password):
-    complete = False
-    allChars = (string.ascii_letters + string.digits + string.punctuation)
-    crackedPass = ""
-    x = 0
-    while complete != True:
-        crackedPass == allChars[x]
-        if crackedPass == password:
-            complete = True
-        x = x + 0
+def bruteForce():
+    startTimeB = time.time()
+    allChars = string.printable
+    for length in range(1, 10):
+        for combination in itertools.product(allChars, repeat=length):
+            guess = "".join(combination)
+            print(guess)
+            if guess == password:
+                endTimeB = time.time()
+                print("Password Cracked! Try a more secure password :3")
+                print("Your password was: ", guess)
+                timeB = (endTimeB - startTimeB)
+                print("Cracking took ", timeB, " seconds")
+                raise SystemExit
 
-if arg == ("-help"):
-    print("To get started, enter one of the arguments:\n-b To brute force a password (plaintext)\n-m For MD5 decryption\n-b For BCrypt decryption\n-s For SHA-256 decryption\n")
-    print("Then follow it up with the password you want decrypted in the right format if it needs to be hashed\n")
-    print("Use the argument -help to see this message again!")
+
+def dictionaryAttack():
+    startTimeD = time.time()
+    listLines = 0
+    with open('passwords.txt','r') as passlist:
+        count = 0
+        for line in passlist:
+            count += 1
+    listLines = count
+
+    
+
 
 if arg == ("-b"):
-    bruteForce(password)
-    bruteTimeI = time.perf_counter()
-    print("Starting brute force attack...")
-    print("This may take a while. Be patient or else :3")
-    print("If you get bored of waiting press CTRL + C to stop the process")
-    bruteTimeF = time.perf_counter()
-    print("Brute Force completed in " + str(bruteTimeF - bruteTimeI) + " seconds") 
+    bruteForce()
+
+if arg == ("-help"):
+    print("To get started, enter one of the arguments:\n-b To brute force a password (10 characters max for plaintext)\n-g To guess a plaintext password\n-m For MD5 hash decryption\n-b For BCrypt hash decryption\n-s For SHA-256 hash decryption\n")
+    print("Then follow it up with the password you want decrypted (Hashed or Plaintext)\n")
+    print("Use the argument -help to see this message again!")
+ 
 
 
 
