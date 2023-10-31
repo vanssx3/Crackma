@@ -6,8 +6,8 @@ import string
 import itertools
 
 
-arg = "-b"
-password = "fnaf"
+arg = "-d"
+password = "vo30qb"
 
 def bruteForce():
     print("Brute Force Attack: trying to crack ", password)
@@ -22,7 +22,7 @@ def bruteForce():
         for combination in itertools.product(allChars, repeat=length):
             guess = "".join(combination)
             tries = tries + 1
-            print(guess)
+            print(guess, " ", tries)
             if guess == password:
                 endTimeB = time.time()
                 print("Password Cracked! Try a more secure password :3")
@@ -39,12 +39,12 @@ def dictionaryAttack():
     with open('passwords.txt','r') as passlist:
         for line in passlist:
             tries = tries + 1
-            # passwordD = 
-            print(line,"1")
-            if line == password:
+            passwordD = password + "\n"
+            print(line)
+            if line == passwordD:
                 endTimeD = time.time()
                 print("Password Guessed! Try a more secure password :3")
-                print("Your password was: ", line)
+                print("Your password was: ",line)
                 timeD = (endTimeD - startTimeD)
                 print("Guessing took ", timeD, " seconds")
                 raise SystemExit
