@@ -1,7 +1,7 @@
 Password Cracker written in Python!
 
 
-Can brute force passwords up to 10 charcaters and run a dictionary attack from the 1M most common passwords.
+Can brute force passwords up to 10 charcaters and run a dictionary attack from the 1M most common passwords. Passwords can either be entered as plaintext, MD5 hash, BCrypt hash, or SHA-256 hash. 
 
 
 !!!!To run you must have python installed!!!!
