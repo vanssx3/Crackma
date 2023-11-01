@@ -94,7 +94,7 @@ if arg1 == ("--help"):
     print(" -b for BCrypt")
     print(" -s for SHA-256\n")
     print("At the end you can optionally add -v to list all guesses (takes SIGNIFICANTLY more time)")
-    print("An example call if you wanted to brute force Hi! in plaintext:")
-    print(" $ python3 main.py -b Hi! -p\n")
+    print("An example call if you wanted to brute force Hi! in plaintext while seeing all guesses:")
+    print(" $ python3 main.py -b Hi! -p -v\n")
     print("Use the argument --help to see this message again!")
  
