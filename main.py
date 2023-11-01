@@ -44,7 +44,7 @@ def bruteForce():
                 guessB = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
             if arg3 == '-v':
                 print(tries, ", ", guess)
-            if guess == password:
+            if guessB == password:
                 endTimeB = time.time()
                 print("Password Cracked! Try a more secure password :3")
                 print("Your password was: ", guess)
