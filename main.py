@@ -7,17 +7,21 @@ import itertools # Allows for better iterations
 # print(sys.argv) for testing agrs
 
 # Gets terminal arguments
-
+arg3 = ""
 arg1 = sys.argv[1]
 if arg1 != ('--help'):
     password = sys.argv[2]
     arg2 = sys.argv[3]
-if len(sys.argv) == 3:
-    arg3 = sys.argv[4]
+if len(sys.argv) == 5:
+    if sys.argv[4] != '-v':
+        print("Invalid argument! Run --help for usage info")
+        raise SystemExit
+    elif sys.argv[4] == '-v':
+        arg3 = sys.argv[4]
 
 # Brute Force algorithm
 def bruteForce():
-    print("Brute Force Attack: trying to crack ", password)
+    print("Brute Force Attack: trying to crack:", password)
     print("If you want to stop the attack then press CTRL + C")
     time.sleep(3)
     print("Starting Brute Force attack...")
@@ -31,10 +35,13 @@ def bruteForce():
             tries = tries + 1
             if arg2 == '-m':
                 guess = hashlib.md5(guess.encode('UTF-8')).hexdigest()
-            if arg2 == '-b':
+            elif arg2 == '-b':
                 guess = hashlib.BCrypt(guess.encode('UTF-8')).hexdigest()
-            if arg2 == '-s':
+            elif arg2 == '-s':
                 guess = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
+            elif arg2 != '-p':
+                print("Invalid Hash Argument! Run --help for usage info")
+                raise SystemExit
             if arg3 == '-v':
                 print(guess, " ", tries)
             if guess == password:
@@ -86,12 +93,8 @@ if arg1 == ("--help"):
     print(" -m For MD5")
     print(" -b for BCrypt")
     print(" -s for SHA-256\n")
+    print("At the end you can optionally add -v to list all guesses (takes SIGNIFICANTLY more time)")
     print("An example call if you wanted to brute force Hi! in plaintext:")
     print(" $ python3 main.py -b Hi! -p\n")
     print("Use the argument --help to see this message again!")
  
-
-
-
-
-
