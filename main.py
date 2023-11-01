@@ -7,10 +7,13 @@ import itertools # Allows for better iterations
 # print(sys.argv) for testing agrs
 
 # Gets terminal arguments
+
 arg1 = sys.argv[1]
 if arg1 != ('--help'):
     password = sys.argv[2]
     arg2 = sys.argv[3]
+if len(sys.argv) == 3:
+    arg3 = sys.argv[4]
 
 # Brute Force algorithm
 def bruteForce():
@@ -26,7 +29,14 @@ def bruteForce():
         for combination in itertools.product(allChars, repeat=length):
             guess = "".join(combination)
             tries = tries + 1
-            print(guess, " ", tries)
+            if arg2 == '-m':
+                guess = hashlib.md5(guess.encode('UTF-8')).hexdigest()
+            if arg2 == '-b':
+                guess = hashlib.BCrypt(guess.encode('UTF-8')).hexdigest()
+            if arg2 == '-s':
+                guess = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
+            if arg3 == '-v':
+                print(guess, " ", tries)
             if guess == password:
                 endTimeB = time.time()
                 print("Password Cracked! Try a more secure password :3")
