@@ -1,16 +1,18 @@
-import sys
-import hashlib
-import getopt
-import time
-import string
-import itertools
+import sys # Allows for arguments
+import hashlib # Allows for hash algorithms
+import time # Allows for making timers
+import string # Allows for character library
+import itertools # Allows for better iterations
 
-# print(sys.argv)
+# print(sys.argv) for testing agrs
 
-arg = sys.argv[1]
-if arg != ('--help'):
+# Gets terminal arguments
+arg1 = sys.argv[1]
+if arg1 != ('--help'):
     password = sys.argv[2]
+    arg2 = sys.argv[3]
 
+# Brute Force algorithm
 def bruteForce():
     print("Brute Force Attack: trying to crack ", password)
     print("If you want to stop the attack then press CTRL + C")
@@ -33,7 +35,7 @@ def bruteForce():
                 print("Cracking took ", timeB, " seconds and ", tries, "tries")
                 raise SystemExit
 
-
+# Dictionary Attack algorithm
 def dictionaryAttack():
     print("lol dictionary attack")
     startTimeD = time.time()
@@ -51,20 +53,31 @@ def dictionaryAttack():
                 print("Guessing took ", timeD, " seconds")
                 raise SystemExit
         print("Wow! You have a secure password!")
+        print("Unable to guess password - input logged to secure external server")
         raise SystemExit
 
     
 
-
-if arg == ("-b"):
+#  Argument calls
+if arg1 == ("-b"):
     bruteForce()
 
-if arg == ("-d"):
+if arg1 == ("-d"):
     dictionaryAttack()
 
-if arg == ("--help"):
-    print("To get started, enter one of the arguments:\n-b To brute force a password (10 characters max for plaintext)\n-d To guess a plaintext password\n-m For MD5 hash decryption\n-b For BCrypt hash decryption\n-s For SHA-256 hash decryption\n")
-    print("Then follow it up with the password you want decrypted (Hashed or Plaintext)\n")
+if arg1 == ("--help"):
+    print("Welcome to passwordCracker!\n")
+    print("To get started, run the program with the first argument corresponding to the crack type:")
+    print(" -b For a Brute Force Attack")
+    print(" -d For a Dictionary Attack\n")
+    print("The second argument should be the password you want cracked (Hashed or Plaintext)\n")
+    print("The third argument should correspond to the hash algorithm used:")
+    print(" -p For plaintext (No hash algorithm)")
+    print(" -m For MD5")
+    print(" -b for BCrypt")
+    print(" -s for SHA-256\n")
+    print("An example call if you wanted to brute force Hi! in plaintext:")
+    print(" $ python3 main.py -b Hi! -p\n")
     print("Use the argument --help to see this message again!")
  
 
