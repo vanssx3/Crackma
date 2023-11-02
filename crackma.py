@@ -9,16 +9,22 @@ maxChars = 10
 
 # Gets terminal arguments
 arg3 = ""
-arg1 = sys.argv[1]
-if arg1 != ('--help'):
-    password = sys.argv[2]
-    arg2 = sys.argv[3]
-if len(sys.argv) == 5:
-    if sys.argv[4] != '-v':
-        print("Invalid argument! Run --help for usage info")
-        raise SystemExit
-    elif sys.argv[4] == '-v':
-        arg3 = sys.argv[4]
+if len(sys.argv) == 1:
+    arg1 = '--help'
+elif len(sys.argv) > 5:
+    print("Invalid arguments! Run --help for usage info")
+    raise SystemExit
+else:
+    arg1 = sys.argv[1]
+    if arg1 != ('--help'):
+        password = sys.argv[2]
+        arg2 = sys.argv[3]
+    if len(sys.argv) == 5:
+        if sys.argv[4] != '-v':
+            print("Invalid argument! Run --help for usage info")
+            raise SystemExit
+        elif sys.argv[4] == '-v':
+            arg3 = sys.argv[4]
 
 # Brute Force algorithm
 def bruteForce():
@@ -39,7 +45,8 @@ def bruteForce():
             if arg2 == '-m':
                 guessB = hashlib.md5(guess.encode('UTF-8')).hexdigest()
             elif arg2 == '-b':
-                guessB = hashlib.BCrypt(guess.encode('UTF-8')).hexdigest()
+                print("BCrypt decryption is currently borked, sorry!")
+                raise SystemExit
             elif arg2 == '-s':
                 guessB = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
             if arg3 == '-v':
@@ -70,7 +77,8 @@ def dictionaryAttack():
             if arg2 == '-m':
                 lineD = hashlib.md5(line.encode('UTF-8')).hexdigest()
             if arg2 == '-b':
-                lineD = hashlib.BCrypt(line.encode('UTF-8')).hexdigest()
+                print("BCrypt decryption is currently borked, sorry!")
+                raise SystemExit
             if arg2 == '-s':
                 lineD = hashlib.sha256(line.encode('UTF-8')).hexdigest()
             if arg3 == '-v':
@@ -125,20 +133,20 @@ elif arg1 == ("-d"): # Call for dictionary attack
     checker()
     dictionaryAttack()
 elif arg1 == ("--help"): # Call for usage information
-    print("Welcome to passwordCracker!\n")
+    print("Welcome to Crackma!\n")
     print("To get started, run the program with the first argument corresponding to the crack type:")
     print(" -b For a Brute Force Attack")
     print(" -d For a Dictionary Attack\n")
     print("The second argument should be the password you want cracked (Hashed or Plaintext)")
-    print("Any password should be no more than " + maxChars.__str__() + " characters when fully decrypted!")
+    print("Any password should be no more than " + maxChars.__str__() + " characters when fully decrypted!\n")
     print("The third argument should correspond to the hash algorithm used:")
     print(" -p For plaintext (No hash algorithm)")
     print(" -m For MD5")
-    print(" -b for BCrypt")
+    print(" -b for BCrypt (Borked!)")
     print(" -s for SHA-256\n")
     print("At the end you can optionally add -v to list all guesses (takes SIGNIFICANTLY more time)")
     print("An example call if you wanted to brute force Hi! in plaintext while seeing all guesses:")
-    print(" $ python3 main.py -b Hi! -p -v\n")
+    print(" $ python3 crackma.py -b Hi! -p -v\n")
     print("Use the argument --help to see this message again!")
     raise SystemExit
 else: # Shows if argument is invalid
