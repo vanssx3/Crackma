@@ -3,6 +3,7 @@ import hashlib # Allows for hash algorithms
 import time # Allows for making timers
 import string # Allows for character library
 import itertools # Allows for better iterations
+import bcrypt # Allows for bcrypt
 
 # Change this to change the max length for passwords!
 maxChars = 10
@@ -16,6 +17,7 @@ elif len(sys.argv) > 5:
     raise SystemExit
 else:
     arg1 = sys.argv[1]
+    print(sys.argv[1])
     if arg1 != ('--help'):
         password = sys.argv[2]
         arg2 = sys.argv[3]
@@ -28,6 +30,7 @@ else:
 
 # Brute Force algorithm
 def bruteForce():
+    print(arg2)
     print("Brute Force Attack - trying to crack:", password)
     print("If you want to stop the attack then press CTRL + C")
     time.sleep(3)
@@ -36,17 +39,23 @@ def bruteForce():
     startTimeB = time.time()
     allChars = string.printable
     tries = 0
+    passwordU = password.encode('utf-8')
     for length in range(1, maxChars):
         for combination in itertools.product(allChars, repeat=length):
             guess = "".join(combination)
             tries = tries + 1
             if arg2 == '-p':
                 guessB = guess
-            if arg2 == '-m':
+            elif arg2 == '-m':
                 guessB = hashlib.md5(guess.encode('UTF-8')).hexdigest()
             elif arg2 == '-b':
-                print("BCrypt decryption is currently borked, sorry!")
-                raise SystemExit
+                guessB = guess.encode('utf-8')
+                salt = bcrypt.gensalt()
+                guessHashed = bcrypt.hashpw(guessB, salt)
+                print(passwordU)
+                print(guessHashed)
+                if bcrypt.checkpw(passwordU, guessHashed) == True:
+                    print("it works now?")
             elif arg2 == '-s':
                 guessB = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
             if arg3 == '-v':
@@ -108,14 +117,18 @@ def checker():
     if arg1 == '-b': # Checks if the password is less than or equal to maxChars if brute forcing plaintext
         if arg2 == '-p':
             if len(password) >= maxChars:
+                print(sys.argv[3])
                 print("Invalid Password - Too many characters! Run --help for usage info")
                 raise SystemExit
     if arg2 == '-m': # Checks if the MD5 hash is valid based on expected hash length
         if len(password) != 32:
             print("Incorrect MD5 Hash - Did you enter your hash correctly?")
             raise SystemExit
-    if arg2 == '-b': # Checks if the BCrypt hash is valid based on expected hash length
-        if len(password) != 64:
+    if arg2 == '-b': # Checks if the BCrypt hash is valid based on expected hash length and if its enclosed in ' '
+        if password[0] != "$":
+            print("Invalid Bcrypt Hash - Be sure to enclose your hash in ' '")
+            raise SystemExit
+        if len(password) != 60:
             print("Incorrect BCrypt Hash - Did you enter your hash correctly?")
             raise SystemExit
     if arg2 == '-s': # Checks if the SHA-256 hash is valid based on expected hash length
@@ -142,7 +155,7 @@ elif arg1 == ("--help"): # Call for usage information
     print("The third argument should correspond to the hash algorithm used:")
     print(" -p For plaintext (No hash algorithm)")
     print(" -m For MD5")
-    print(" -b for BCrypt (Borked!)")
+    print(" -b for BCrypt (Hash must be enclosed in ' ' to function!)")
     print(" -s for SHA-256\n")
     print("At the end you can optionally add -v to list all guesses (takes SIGNIFICANTLY more time)")
     print("An example call if you wanted to brute force Hi! in plaintext while seeing all guesses:")
