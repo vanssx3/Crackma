@@ -36,30 +36,31 @@ def bruteForce():
     time.sleep(3)
     print("Starting Brute Force Attack...")
     time.sleep(0.5)
-    startTimeB = time.time()
     allChars = string.printable
     tries = 0
+    startTimeB = time.time()
     passwordU = password.encode('utf-8')
     for length in range(1, maxChars):
         for combination in itertools.product(allChars, repeat=length):
             guess = "".join(combination)
             tries = tries + 1
+            if arg3 == '-v':
+                print(tries, ", ", guess)
             if arg2 == '-p':
                 guessB = guess
             elif arg2 == '-m':
-                guessB = hashlib.md5(guess.encode('UTF-8')).hexdigest()
+                guessB = hashlib.md5(guess.encode('utf-8')).hexdigest()
             elif arg2 == '-b':
                 guessB = guess.encode('utf-8')
-                salt = bcrypt.gensalt()
-                guessHashed = bcrypt.hashpw(guessB, salt)
-                print(passwordU)
-                print(guessHashed)
-                if bcrypt.checkpw(passwordU, guessHashed) == True:
-                    print("it works now?")
+                if bcrypt.checkpw(guessB, passwordU) == True:
+                    endTimeB = time.time()
+                    print("Password Cracked! Try a more secure password :3")
+                    print("Your password was: ", guess)
+                    timeB = (endTimeB - startTimeB)
+                    print("Cracking took ", timeB, " seconds and ", tries, "tries")
+                    raise SystemExit
             elif arg2 == '-s':
                 guessB = hashlib.sha256(guess.encode('UTF-8')).hexdigest()
-            if arg3 == '-v':
-                print(tries, ", ", guess)
             if guessB == password:
                 endTimeB = time.time()
                 print("Password Cracked! Try a more secure password :3")
@@ -75,24 +76,33 @@ def dictionaryAttack():
     time.sleep(3)
     print("Starting Dictionary Attack...")
     time.sleep(0.5)
+    passwordU = password.encode('utf-8')
     startTimeD = time.time()
     tries = 0
     with open('passwords.txt','r') as passlist:
         for line in passlist:
             tries = tries + 1
-            passwordD = password + "\n"
-            if arg2 == '-p':
-                lineD = line
-            if arg2 == '-m':
-                lineD = hashlib.md5(line.encode('UTF-8')).hexdigest()
-            if arg2 == '-b':
-                print("BCrypt decryption is currently borked, sorry!")
-                raise SystemExit
-            if arg2 == '-s':
-                lineD = hashlib.sha256(line.encode('UTF-8')).hexdigest()
             if arg3 == '-v':
-                print(lineD)
-            if lineD == passwordD:
+                print(tries, ", ", line)
+            if arg2 == '-p':
+                lineD = line.replace('\n','')
+            if arg2 == '-m':
+                lineD = line.replace('\n','')
+                lineD = hashlib.md5(lineD.encode('UTF-8')).hexdigest()
+            if arg2 == '-b':
+                lineD = line.replace('\n','')
+                lineD = lineD.encode('utf-8')
+                if bcrypt.checkpw(lineD, passwordU) == True:
+                    endTimeD = time.time()
+                    print("Password Guessed! Try a more secure password :3")
+                    print("Your password was: ",lineD)
+                    timeD = (endTimeD - startTimeD)
+                    print("Guessing took ", timeD, " seconds")
+                    raise SystemExit
+            if arg2 == '-s':
+                lineD = line.replace('\n','')
+                lineD = hashlib.sha256(lineD.encode('UTF-8')).hexdigest()
+            if lineD == password:
                 endTimeD = time.time()
                 print("Password Guessed! Try a more secure password :3")
                 print("Your password was: ",line)
