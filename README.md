@@ -49,6 +49,8 @@ git clone https://github.com/vanssx3/Crackma.git
 
 If you do not have git installed already install it here with instructions for your OS: https://git-scm.com/downloads
 
+If for some reason you are unable to install git on your computer, you can download crackma.py and passwords.txt and put them into the same folder to run them.
+
 # Usage
 This program runs in a terminal or command prompt. To run the program, make sure that you are in the same directory you installed the program in, then run 
 ```sh
