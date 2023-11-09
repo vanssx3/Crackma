@@ -10,14 +10,13 @@ maxChars = 10
 
 # Gets terminal arguments
 arg3 = ""
-if len(sys.argv) == 1:
+if len(sys.argv) == 1: # If nothing is added as an argument it will display the --help message
     arg1 = '--help'
 elif len(sys.argv) > 5:
-    print("Invalid arguments! Run --help for usage info")
+    print("Invalid arguments! Run --help for usage info") # Won't let you add unnecesary args
     raise SystemExit
 else:
     arg1 = sys.argv[1]
-    print(sys.argv[1])
     if arg1 != ('--help'):
         password = sys.argv[2]
         arg2 = sys.argv[3]
@@ -30,16 +29,15 @@ else:
 
 # Brute Force algorithm
 def bruteForce():
-    print(arg2)
     print("Brute Force Attack - trying to crack:", password)
     print("If you want to stop the attack then press CTRL + C")
     time.sleep(3)
     print("Starting Brute Force Attack...")
     time.sleep(0.5)
-    allChars = string.printable
-    tries = 0
-    startTimeB = time.time()
-    passwordU = password.encode('utf-8')
+    allChars = string.printable 
+    tries = 0 
+    startTimeB = time.time() 
+    passwordU = password.encode('utf-8') 
     for length in range(1, maxChars):
         for combination in itertools.product(allChars, repeat=length):
             guess = "".join(combination)
@@ -161,7 +159,7 @@ elif arg1 == ("--help"): # Call for usage information
     print(" -b For a Brute Force Attack")
     print(" -d For a Dictionary Attack\n")
     print("The second argument should be the password you want cracked (Hashed or Plaintext)")
-    print("Any password should be no more than " + maxChars.__str__() + " characters when fully decrypted!\n")
+    print("Any brute force password should be no more than " + maxChars.__str__() + " characters when fully decrypted!\n")
     print("The third argument should correspond to the hash algorithm used:")
     print(" -p For plaintext (No hash algorithm)")
     print(" -m For MD5")
