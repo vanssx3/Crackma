@@ -90,6 +90,7 @@ def dictionaryAttack():
             if arg2 == '-b':
                 lineD = line.replace('\n','')
                 lineD = lineD.encode('utf-8')
+                lineD = lineD.lower()
                 if bcrypt.checkpw(lineD, passwordU) == True:
                     endTimeD = time.time()
                     print("Password Guessed! Try a more secure password :3")
